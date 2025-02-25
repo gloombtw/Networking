@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  NetworkError.swift
 //  Networking
 //
 //  Created by Dustin Sapp on 2/23/25.
@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// An enumeration of possbile network error scenarios. 
 public enum NetworkError: Error, CustomStringConvertible {
     case invalidURL
     case invalidHTTPResponse(URLResponse)
