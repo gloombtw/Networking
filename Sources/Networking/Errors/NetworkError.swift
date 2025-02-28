@@ -11,6 +11,7 @@ import Foundation
 public enum NetworkError: Error, CustomStringConvertible {
     case invalidURL
     case invalidHTTPResponse(URLResponse)
+    case userNotAuthenticated
     
     public var description: String {
         switch self {
@@ -18,6 +19,8 @@ public enum NetworkError: Error, CustomStringConvertible {
             return "Unable to build URL"
         case .invalidHTTPResponse(let response):
             return "Response returned: \(response)"
+        case .userNotAuthenticated:
+            return "Access Denied"
         }
     }
 }

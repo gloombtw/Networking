@@ -7,15 +7,13 @@
 
 import Foundation
 
-@available(iOS 15.0, *)
-@available(macOS 12.0, *)
 /// Base HTTP client for handling HTTP network requests
 public final class BaseHTTPClient: HTTPClient {
     private let urlSession: URLSession
     /// Creates a `BaseHTTPClient` from the specified parameters
     ///
     /// - Parameters:
-    ///   - urlSession: a `Foundation` `URLSession` defaults to shared instance
+    ///   - urlSession: a `Foundation` `URLSession` defaults to .shared
     public init(urlSession: URLSession = .shared) {
         self.urlSession = urlSession
     }
@@ -28,7 +26,7 @@ public final class BaseHTTPClient: HTTPClient {
         guard let url = request.url else { throw NetworkError.invalidURL }
         
         var urlRequest = URLRequest(url: url)
-        request.headers.forEach { key, value in urlRequest.addValue(value, forHTTPHeaderField: key) }
+        request.headers?.forEach { key, value in urlRequest.addValue(value, forHTTPHeaderField: key) }
         
         let (data, response) = try await urlSession.data(for: urlRequest)
         
@@ -47,7 +45,7 @@ public final class BaseHTTPClient: HTTPClient {
         guard let url = request.url else { throw NetworkError.invalidURL }
         
         var urlRequest = URLRequest(url: url)
-        request.headers.forEach { key, value in urlRequest.addValue(value, forHTTPHeaderField: key) }
+        request.headers?.forEach { key, value in urlRequest.addValue(value, forHTTPHeaderField: key) }
         
         let (data, response) = try await URLSession.shared.upload(for: urlRequest, from: data)
         

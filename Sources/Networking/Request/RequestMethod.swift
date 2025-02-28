@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// An enumeration of HTTP request methods.
 public enum RequestMethod: String {
     case get = "GET"
     case post = "POST"
