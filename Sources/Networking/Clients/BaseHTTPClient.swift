@@ -8,7 +8,7 @@
 import Foundation
 
 /// Base HTTP client for handling HTTP network requests
-public final class BaseHTTPClient: HTTPClient {
+public final class BaseHTTPClient<Request: APIRequest>: HTTPClient {
     private let urlSession: URLSession
     /// Creates a `BaseHTTPClient` from the specified parameters
     ///
@@ -22,13 +22,15 @@ public final class BaseHTTPClient: HTTPClient {
     ///
     /// - Parameters:
     ///  - request: a request conforming to the `NetworkRequestProtocol`
-    public func startDataRequest(for request: HTTPRequest) async throws -> (Data, HTTPURLResponse) {
+    public func startDataRequest(for request: Request) async throws -> (Data, HTTPURLResponse) {
         guard let url = request.url else { throw NetworkError.invalidURL }
-        
+
         var urlRequest = URLRequest(url: url)
         request.headers?.forEach { key, value in urlRequest.addValue(value, forHTTPHeaderField: key) }
         
         let (data, response) = try await urlSession.data(for: urlRequest)
+        
+        guard !Task.isCancelled else { throw NetworkError.taskCanceled }
         
         guard let httpResponse = response as? HTTPURLResponse else { throw NetworkError.invalidHTTPResponse(response) }
         
@@ -41,13 +43,15 @@ public final class BaseHTTPClient: HTTPClient {
     ///  - request: a request conforming to the `NetworkRequestProtocol`.
     ///  - data: The data for submission.
     @discardableResult
-    public func startUploadRequest(for request: HTTPRequest, _ data: Data) async throws -> (Data, HTTPURLResponse) {
+    public func startUploadRequest(for request: Request, _ data: Data) async throws -> (Data, HTTPURLResponse) {
         guard let url = request.url else { throw NetworkError.invalidURL }
         
         var urlRequest = URLRequest(url: url)
         request.headers?.forEach { key, value in urlRequest.addValue(value, forHTTPHeaderField: key) }
         
         let (data, response) = try await URLSession.shared.upload(for: urlRequest, from: data)
+        
+        guard !Task.isCancelled else { throw NetworkError.taskCanceled }
         
         guard let httpResponse = response as? HTTPURLResponse else { throw NetworkError.invalidHTTPResponse(response) }
         

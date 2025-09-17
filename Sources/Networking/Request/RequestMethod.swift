@@ -8,7 +8,7 @@
 import Foundation
 
 /// An enumeration of HTTP request methods.
-public enum RequestMethod: String {
+public enum HTTPMethod: String {
     case get = "GET"
     case post = "POST"
     case delete = "DELETE"
