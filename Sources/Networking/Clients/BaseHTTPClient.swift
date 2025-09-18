@@ -8,7 +8,7 @@
 import Foundation
 
 /// Base HTTP client for handling HTTP network requests
-public final class BaseHTTPClient<Request: APIRequest>: HTTPClient {
+open class BaseHTTPClient<Request: APIRequest>: HTTPClient {
     private let urlSession: URLSession
     /// Creates a `BaseHTTPClient` from the specified parameters
     ///
