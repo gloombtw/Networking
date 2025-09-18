@@ -22,7 +22,7 @@ open class BaseHTTPClient<Request: APIRequest>: HTTPClient {
     ///
     /// - Parameters:
     ///  - request: a request conforming to the `NetworkRequestProtocol`
-    public func startDataRequest(for request: Request) async throws -> (Data, HTTPURLResponse) {
+    open func startDataRequest(for request: Request) async throws -> (Data, HTTPURLResponse) {
         guard let url = request.url else { throw NetworkError.invalidURL }
 
         var urlRequest = URLRequest(url: url)
@@ -43,7 +43,7 @@ open class BaseHTTPClient<Request: APIRequest>: HTTPClient {
     ///  - request: a request conforming to the `NetworkRequestProtocol`.
     ///  - data: The data for submission.
     @discardableResult
-    public func startUploadRequest(for request: Request, _ data: Data) async throws -> (Data, HTTPURLResponse) {
+    open func startUploadRequest(for request: Request, _ data: Data) async throws -> (Data, HTTPURLResponse) {
         guard let url = request.url else { throw NetworkError.invalidURL }
         
         var urlRequest = URLRequest(url: url)
